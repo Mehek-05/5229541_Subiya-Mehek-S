@@ -14,3 +14,5 @@ Practicing of Git bash to Github connection
 ![alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/1975d1db8f4da9d0f0d68f45d1ffc325372b43f8/Linux%20commands/commands%2049%20to%20100.png)
 
 ![alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/d063d5e2cb215a3d494aacafd27164a2c6362398/Linux%20commands/commands%20101%20to%20155.png)
+
+![image alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/545b50bca8bf84444b525826d33f237c42e732fb/Linux%20commands/commands%20156%20to%20166.png)
