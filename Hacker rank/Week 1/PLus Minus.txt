@@ -1,0 +1,24 @@
+#include<stdio.h> 
+int main(){ 
+    int size,pos=0,neg=0,zero=0; 
+    
+    scanf("%d",&size); 
+    int arr[size]; 
+    for(int i = 0; i <size ; i++){ 
+        scanf("%d",&arr[i]); 
+    } 
+    for (int i = 0 ; i < size; i++){ 
+        if (arr[i] > 0){ 
+            pos++; 
+        } 
+        else if (arr[i] < 0){ 
+            neg++; 
+        }else{ 
+            zero++; 
+        } 
+    } 
+     
+    printf("%.6f \n", (float)pos/size); 
+    printf("%.6f \n", (float)neg/size); 
+    printf("%.6f \n", (float)zero/size); 
+}
