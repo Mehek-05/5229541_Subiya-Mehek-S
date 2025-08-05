@@ -23,3 +23,7 @@ Practicing of Git bash to Github connection
 ![image alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/2674db648480a887f3ca355825aa8e9af09e8cba/Linux%20commands/commands%20225%20to%20279.png)
 
 ![image alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/e8afc0208cf51e8f6e5e95e7c5c83cb832ad2574/Linux%20commands/command%20280%20to%20303.png)
+
+# Solo Learn Certificate
+
+![image alt](https://github.com/Mehek-05/5229541_Subiya-Mehek-S/blob/4ee1595a3b28f19b01181df0f62e345ab4625281/SDLC/Solo%20Learn%20C%20ceritificate.jpg)
