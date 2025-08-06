@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+    int n, num;
+    scanf("%d", &n);
+    int count[100] = {0};  // Initialize all counts to 0
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &num);
+        count[num]++;  // Increase the count for this number
+    }
+
+    // Print the frequency array
+    for (int i = 0; i < 100; i++) {
+        printf("%d ", count[i]);
+    }
+
+    return 0;
+}

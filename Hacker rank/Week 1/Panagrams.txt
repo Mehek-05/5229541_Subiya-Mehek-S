@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int main() {
+    char s[1001];
+    fgets(s, sizeof(s), stdin);  // Read the whole input line
+    int alpha[26] = {0};
+
+    for (int i = 0; s[i]; i++) {
+        if (isalpha(s[i])) {
+            char ch = tolower(s[i]);
+            alpha[ch - 'a'] = 1;
+        }
+    }
+
+    int isPangram = 1;
+    for (int i = 0; i < 26; i++) {
+        if (alpha[i] == 0) {
+            isPangram = 0;
+            break;
+        }
+    }
+
+    if (isPangram)
+        printf("pangram\n");
+    else
+        printf("not pangram\n");
+
+    return 0;
+}
