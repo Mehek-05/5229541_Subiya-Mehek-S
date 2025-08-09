@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void caesarCipher(char s[], int k) {
+    int len = strlen(s);
+    k = k % 26; // Normalize shift (rotation factor)
+    for (int i = 0; i < len; i++) {
+        if (isalpha(s[i])) { // Encrypt only letters
+            char base = islower(s[i]) ? 'a' : 'A';
+            s[i] = (char)(((s[i] - base + k) % 26) + base);
+        }
+    }
+}
+
+int main() {
+    int n, k;
+    char s[101]; // Max length 100 + 1 for '\0'
+
+    scanf("%d", &n);
+    scanf("%s", s);
+    scanf("%d", &k);
+
+    caesarCipher(s, k);
+    printf("%s\n", s);
+
+    return 0;
+}

@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int towerBreakers(int n, int m) {
+    if (m == 1) return 2;          // No moves possible
+    if (n % 2 == 0) return 2;      // Player 2 wins by symmetry
+    return 1;                      // Player 1 wins
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        int n, m;
+        scanf("%d %d", &n, &m);
+        printf("%d\n", towerBreakers(n, m));
+    }
+    return 0;
+}
