@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+typedef struct {
+    int day;
+    int month;
+    int year;
+} Date;
+
+bool isLeapYear(int year) {
+    return (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
+}
+
+int daysInMonth(int month, int year) {
+    const int days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    if (month == 2 && isLeapYear(year)) return 29;
+    return days[month-1];
+}
+
+void parseDate(const char* s, Date* d) {
+    sscanf(s, "%d-%d-%d", &d->day, &d->month, &d->year);
+}
+
+bool isDateLessOrEqual(Date d1, Date d2) {
+    if (d1.year != d2.year) return d1.year < d2.year;
+    if (d1.month != d2.month) return d1.month < d2.month;
+    return d1.day <= d2.day;
+}
+
+long concatenateDate(Date d) {
+    // Concatenate day, month, year as integer with no leading zeros
+    return d.day * 1000000 + d.month * 10000 + d.year;
+}
+
+bool isLuckyDate(Date d) {
+    long val = concatenateDate(d);
+    return (val % 4 == 0) || (val % 7 == 0);
+}
+
+void incrementDate(Date* d) {
+    d->day++;
+    if (d->day > daysInMonth(d->month, d->year)) {
+        d->day = 1;
+        d->month++;
+        if (d->month > 12) {
+            d->month = 1;
+            d->year++;
+        }
+    }
+}
+
+int countLuckyDates(Date start, Date end) {
+    int count = 0;
+    while (isDateLessOrEqual(start, end)) {
+        if (isLuckyDate(start)) count++;
+        incrementDate(&start);
+    }
+    return count;
+}
+
+int main() {
+    char startStr[11], endStr[11];
+    Date startDate, endDate;
+    scanf("%10s %10s", startStr, endStr);
+    parseDate(startStr, &startDate);
+    parseDate(endStr, &endDate);
+    printf("%d\n", countLuckyDates(startDate, endDate));
+    return 0;
+}

@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>  // For qsort
+
+int cmp(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void findZigZagSequence(int arr[], int n) {
+    qsort(arr, n, sizeof(int), cmp);
+    int mid = (n + 1) / 2 - 1;
+    swap(&arr[mid], &arr[n - 1]);
+
+    int st = mid + 1;
+    int ed = n - 2;
+    while (st < ed) {
+        swap(&arr[st], &arr[ed]);
+        st++;
+        ed--;
+    }
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        int n;
+        scanf("%d", &n);
+        int arr[n];
+        for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+        findZigZagSequence(arr, n);
+        for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+        printf("\n");
+    }
+    return 0;
+}

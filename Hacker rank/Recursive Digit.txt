@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to recursively find super digit
+int superDigitHelper(long long num) {
+    if (num < 10) return num;
+    
+    long long sum = 0;
+    while (num > 0) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return superDigitHelper(sum);
+}
+
+// Main function to calculate super digit of n repeated k times
+int superDigit(char *n, int k) {
+    long long initialSum = 0;
+    int len = strlen(n);
+    
+    // Sum the digits of the original string once
+    for (int i = 0; i < len; i++) {
+        initialSum += (n[i] - '0');
+    }
+    
+    // Multiply sum by k to simulate concatenation
+    initialSum *= k;
+    
+    // Recursively find super digit
+    return superDigitHelper(initialSum);
+}
+
+int main() {
+    char n[100001];
+    int k;
+    scanf("%s %d", n, &k);
+    
+    printf("%d\n", superDigit(n, k));
+    return 0;
+}
