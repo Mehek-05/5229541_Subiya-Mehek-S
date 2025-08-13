@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_CHAR 26
+
+char* isValid(char* s) {
+    int freq[MAX_CHAR] = {0};
+    int i, n = strlen(s);
+
+    for (i = 0; i < n; i++) {
+        freq[s[i] - 'a']++;
+    }
+
+    // Find max frequency to size freqCount array
+    int maxFreq = 0;
+    for (i = 0; i < MAX_CHAR; i++) {
+        if (freq[i] > maxFreq) {
+            maxFreq = freq[i];
+        }
+    }
+
+    // Allocate freqCount array dynamically
+    int* freqCount = (int*) calloc(maxFreq + 1, sizeof(int));
+    if (freqCount == NULL) {
+        // Allocation failed
+        return "NO";
+    }
+
+    for (i = 0; i < MAX_CHAR; i++) {
+        if (freq[i] > 0) {
+            freqCount[freq[i]]++;
+        }
+    }
+
+    int distinctFreqs = 0;
+    int freq1 = 0, count1 = 0;
+    int freq2 = 0, count2 = 0;
+
+    for (i = 1; i <= maxFreq; i++) {
+        if (freqCount[i] > 0) {
+            distinctFreqs++;
+            if (freq1 == 0) {
+                freq1 = i;
+                count1 = freqCount[i];
+            } else {
+                freq2 = i;
+                count2 = freqCount[i];
+            }
+        }
+    }
+
+    free(freqCount);
+
+    if (distinctFreqs == 1) {
+        // All characters have the same frequency
+        return "YES";
+    } else if (distinctFreqs == 2) {
+        // Make freq1 the smaller frequency
+        if (freq1 > freq2) {
+            int tmpf = freq1; freq1 = freq2; freq2 = tmpf;
+            int tmpc = count1; count1 = count2; count2 = tmpc;
+        }
+
+        // Case 1: One frequency is 1 and only one character has this freq (remove that one char)
+        if (freq1 == 1 && count1 == 1) {
+            return "YES";
+        }
+        // Case 2: The two frequencies differ by exactly 1 and the higher frequency count is 1 (remove one occurrence from that char)
+        if ((freq2 - freq1 == 1) && (count2 == 1)) {
+            return "YES";
+        }
+        return "NO";
+    } else {
+        // More than 2 distinct frequencies - not valid
+        return "NO";
+    }
+}
+
+int main() {
+    char s[100001];
+    scanf("%100000s", s);
+    printf("%s\n", isValid(s));
+    return 0;
+}
