@@ -1,0 +1,22 @@
+DoublyLinkedListNode* reverse(DoublyLinkedListNode* llist) {
+    DoublyLinkedListNode *current = llist;
+    DoublyLinkedListNode *temp = NULL;
+
+    // Traverse the list and swap next and prev for each node
+    while (current != NULL) {
+        // Swap prev and next
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
+
+        // Move to the next node (which is current->prev after swap)
+        current = current->prev;
+    }
+
+    // After the loop, temp will be at the old head's prev (new head)
+    if (temp != NULL) {
+        llist = temp->prev; // temp is one step past new head
+    }
+
+    return llist;
+}

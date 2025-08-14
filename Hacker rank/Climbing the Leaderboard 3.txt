@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+void climbingLeaderboard(int ranked[], int n, int player[], int m, int result[]) {
+    // Step 1: Create a compressed leaderboard without duplicates
+    int unique[n];
+    int uniqueCount = 0;
+    unique[uniqueCount++] = ranked[0];
+    for (int i = 1; i < n; i++) {
+        if (ranked[i] != ranked[i - 1]) {
+            unique[uniqueCount++] = ranked[i];
+        }
+    }
+
+    // Step 2: Start from the bottom of the leaderboard
+    int i = uniqueCount - 1;
+    for (int j = 0; j < m; j++) {
+        // Move up the leaderboard while player score >= leaderboard score
+        while (i >= 0 && player[j] >= unique[i]) {
+            i--;
+        }
+        // Rank is index+2 because:
+        // i points to the first higher score, so rank is i+2
+        result[j] = i + 2;
+    }
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    int ranked[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &ranked[i]);
+    }
+
+    int m;
+    scanf("%d", &m);
+    int player[m];
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &player[i]);
+    }
+
+    int result[m];
+    climbingLeaderboard(ranked, n, player, m, result);
+
+    for (int i = 0; i < m; i++) {
+        printf("%d\n", result[i]);
+    }
+
+    return 0;
+}
