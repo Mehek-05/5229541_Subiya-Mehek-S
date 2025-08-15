@@ -1,0 +1,22 @@
+SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* llist, int data, int position) {
+    // Create the new node
+    SinglyLinkedListNode* newNode = create_singly_linked_list_node(data);
+
+    // If inserting at head (position 0)
+    if (position == 0) {
+        newNode->next = llist;
+        return newNode;
+    }
+
+    // Traverse to the node just before the insertion point
+    SinglyLinkedListNode* current = llist;
+    for (int i = 0; i < position - 1 && current != NULL; i++) {
+        current = current->next;
+    }
+
+    // Insert the node
+    newNode->next = current->next;
+    current->next = newNode;
+
+    return llist;
+}
