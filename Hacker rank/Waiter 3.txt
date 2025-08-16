@@ -1,0 +1,70 @@
+#include <stdbool.h>
+#include <stdlib.h>
+
+static int get_nth_prime(int n) {
+    int count = 0, num = 1;
+    while (count < n) {
+        num++;
+        bool isPrime = true;
+        for (int i = 2; i * i <= num; i++) {
+            if (num % i == 0) {
+                isPrime = false;
+                break;
+            }
+        }
+        if (isPrime) count++;
+    }
+    return num;
+}
+
+int* waiter(int number_count, int* number, int q, int* result_count) {
+    int capacity = number_count;
+    int* result = malloc(capacity * sizeof(int));
+    int res_index = 0;
+
+    // Copy input to stack A (top at the end of array)
+    int* A = malloc(number_count * sizeof(int));
+    int A_count = number_count;
+    for (int i = 0; i < number_count; i++) {
+        A[i] = number[i];
+    }
+
+    // Perform q iterations
+    for (int i = 1; i <= q; i++) {
+        int prime = get_nth_prime(i);
+
+        int* A_next = malloc(number_count * sizeof(int));
+        int A_next_count = 0;
+
+        int* B = malloc(number_count * sizeof(int));
+        int B_count = 0;
+
+        // Process from top to bottom (end of A is top)
+        for (int j = A_count - 1; j >= 0; j--) {
+            if (A[j] % prime == 0) {
+                B[B_count++] = A[j];
+            } else {
+                A_next[A_next_count++] = A[j];
+            }
+        }
+
+        // Output B's contents from top to bottom
+        for (int j = B_count - 1; j >= 0; j--) {
+            result[res_index++] = B[j];
+        }
+
+        free(B);
+        free(A);
+        A = A_next;
+        A_count = A_next_count;
+    }
+
+    // Output remaining plates in A
+    for (int j = A_count - 1; j >= 0; j--) {
+        result[res_index++] = A[j];
+    }
+
+    free(A);
+    *result_count = res_index;
+    return result;
+}
