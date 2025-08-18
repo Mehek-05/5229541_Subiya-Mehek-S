@@ -1,0 +1,43 @@
+int* maxSubarray(int arr_count, int* arr, int* result_count) {
+    // Kadane's algorithm for maximum subarray sum
+    int max_subarray = arr[0];
+    int current = arr[0];
+
+    for (int i = 1; i < arr_count; i++) {
+        if (current + arr[i] > arr[i]) {
+            current = current + arr[i];
+        } else {
+            current = arr[i];
+        }
+        if (current > max_subarray) {
+            max_subarray = current;
+        }
+    }
+
+    // Maximum subsequence sum
+    int max_subsequence = 0;
+    int has_positive = 0;
+    int max_element = arr[0];
+
+    for (int i = 0; i < arr_count; i++) {
+        if (arr[i] > 0) {
+            max_subsequence += arr[i];
+            has_positive = 1;
+        }
+        if (arr[i] > max_element) {
+            max_element = arr[i];
+        }
+    }
+
+    if (!has_positive) {
+        max_subsequence = max_element;
+    }
+
+    // Prepare result
+    *result_count = 2;
+    int* result = malloc(2 * sizeof(int));
+    result[0] = max_subarray;
+    result[1] = max_subsequence;
+
+    return result;
+}

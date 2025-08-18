@@ -1,0 +1,46 @@
+#define MOD 1000000007
+
+long modpow(long base, int exp) {
+    long res = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp & 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp >>= 1;
+    }
+    return res;
+}
+
+int legoBlocks(int n, int m) {
+    static long row[1001];    // row[w] ways to build 1 row of width w
+    static long total[1001];  // total[w] ways for n rows ignoring cracks
+    static long valid[1001];  // valid[w] ways with no vertical crack
+    
+    // compute row[] up to m
+    row[0] = 1;
+    for (int w = 1; w <= m; w++) {
+        row[w] = 0;
+        for (int k = 1; k <= 4; k++) {
+            if (w - k >= 0) {
+                row[w] = (row[w] + row[w - k]) % MOD;
+            }
+        }
+    }
+    
+    // compute total[] = row[w]^n
+    for (int w = 1; w <= m; w++) {
+        total[w] = modpow(row[w], n);
+    }
+    
+    // compute valid[]
+    valid[0] = 0;
+    for (int w = 1; w <= m; w++) {
+        long val = total[w];
+        for (int k = 1; k < w; k++) {
+            val = (val - (valid[k] * total[w - k]) % MOD + MOD) % MOD;
+        }
+        valid[w] = val;
+    }
+    
+    return (int)valid[m];
+}

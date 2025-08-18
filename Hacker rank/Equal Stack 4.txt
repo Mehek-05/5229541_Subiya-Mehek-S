@@ -1,0 +1,32 @@
+int equalStacks(int h1_count, int* h1, int h2_count, int* h2, int h3_count, int* h3) {
+    // Compute initial sums (total heights of stacks)
+    int sum1 = 0, sum2 = 0, sum3 = 0;
+    for (int i = 0; i < h1_count; i++) sum1 += h1[i];
+    for (int i = 0; i < h2_count; i++) sum2 += h2[i];
+    for (int i = 0; i < h3_count; i++) sum3 += h3[i];
+
+    // Index pointers (top of stacks)
+    int i1 = 0, i2 = 0, i3 = 0;
+
+    // Keep reducing until equal or empty
+    while (1) {
+        // If any stack is empty, no common height possible
+        if (i1 == h1_count || i2 == h2_count || i3 == h3_count) {
+            return 0;
+        }
+
+        // If all equal, return
+        if (sum1 == sum2 && sum2 == sum3) {
+            return sum1;
+        }
+
+        // Remove from the tallest stack
+        if (sum1 >= sum2 && sum1 >= sum3) {
+            sum1 -= h1[i1++];
+        } else if (sum2 >= sum1 && sum2 >= sum3) {
+            sum2 -= h2[i2++];
+        } else {
+            sum3 -= h3[i3++];
+        }
+    }
+}
