@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 200000
+
+int heap[MAXN];
+int size = 0;
+
+void swap(int *a, int *b) {
+    int t = *a; *a = *b; *b = t;
+}
+
+void heapify_down(int i) {
+    int smallest = i;
+    int l = 2*i, r = 2*i+1;
+    if (l <= size && heap[l] < heap[smallest]) smallest = l;
+    if (r <= size && heap[r] < heap[smallest]) smallest = r;
+    if (smallest != i) {
+        swap(&heap[i], &heap[smallest]);
+        heapify_down(smallest);
+    }
+}
+
+void heapify_up(int i) {
+    while (i > 1 && heap[i] < heap[i/2]) {
+        swap(&heap[i], &heap[i/2]);
+        i /= 2;
+    }
+}
+
+void push(int x) {
+    heap[++size] = x;
+    heapify_up(size);
+}
+
+void remove_val(int x) {
+    int i;
+    for (i = 1; i <= size; i++) {
+        if (heap[i] == x) break;
+    }
+    if (i > size) return; // not found (should not happen by problem statement)
+    heap[i] = heap[size--];  // replace with last
+    heapify_down(i);
+    heapify_up(i);           // also check upwards
+}
+
+int getMin() {
+    return heap[1];
+}
+
+int main() {
+    int Q;
+    scanf("%d", &Q);
+    while (Q--) {
+        int type, val;
+        scanf("%d", &type);
+        if (type == 1) {
+            scanf("%d", &val);
+            push(val);
+        } else if (type == 2) {
+            scanf("%d", &val);
+            remove_val(val);
+        } else {
+            printf("%d\n", getMin());
+        }
+    }
+    return 0;
+}

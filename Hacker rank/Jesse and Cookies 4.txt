@@ -1,0 +1,60 @@
+int heap[1000000];
+int heapSize = 0;
+
+void swap(int *a, int *b) {
+    int t = *a; *a = *b; *b = t;
+}
+
+void heapify_up(int i) {
+    while (i > 1 && heap[i] < heap[i/2]) {
+        swap(&heap[i], &heap[i/2]);
+        i /= 2;
+    }
+}
+
+void heapify_down(int i) {
+    int smallest = i;
+    int l = 2*i, r = 2*i+1;
+    if (l <= heapSize && heap[l] < heap[smallest]) smallest = l;
+    if (r <= heapSize && heap[r] < heap[smallest]) smallest = r;
+    if (smallest != i) {
+        swap(&heap[i], &heap[smallest]);
+        heapify_down(smallest);
+    }
+}
+
+void push(int x) {
+    heap[++heapSize] = x;
+    heapify_up(heapSize);
+}
+
+int pop() {
+    if (heapSize == 0) return -1;
+    int minVal = heap[1];
+    heap[1] = heap[heapSize--];
+    heapify_down(1);
+    return minVal;
+}
+
+int top() {
+    if (heapSize == 0) return -1;
+    return heap[1];
+}
+
+int cookies(int k, int A_count, int* A) {
+    heapSize = 0;
+    for (int i = 0; i < A_count; i++) {
+        push(A[i]);
+    }
+
+    int ops = 0;
+    while (top() < k) {
+        if (heapSize < 2) return -1;
+        int least = pop();
+        int second = pop();
+        int newCookie = least + 2 * second;
+        push(newCookie);
+        ops++;
+    }
+    return ops;
+}

@@ -1,0 +1,37 @@
+#include <stdlib.h>
+
+// compare function for qsort
+int cmp(const void* a, const void* b) {
+    int x = *(int*)a;
+    int y = *(int*)b;
+    return (x > y) - (x < y);
+}
+
+int hackerlandRadioTransmitters(int x_count, int* x, int k) {
+    // sort house locations
+    qsort(x, x_count, sizeof(int), cmp);
+
+    int i = 0;
+    int transmitters = 0;
+
+    while (i < x_count) {
+        transmitters++;
+
+        // Step 1: move to farthest house within k from x[i]
+        int loc = x[i] + k;
+        while (i < x_count && x[i] <= loc) {
+            i++;
+        }
+
+        // Step 2: place transmitter at last house within this range
+        int transmitter_pos = x[i-1];
+
+        // Step 3: skip all houses covered by transmitter
+        loc = transmitter_pos + k;
+        while (i < x_count && x[i] <= loc) {
+            i++;
+        }
+    }
+
+    return transmitters;
+}
