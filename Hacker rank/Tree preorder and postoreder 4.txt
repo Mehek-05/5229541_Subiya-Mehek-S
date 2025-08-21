@@ -1,0 +1,7 @@
+void preOrder(struct node *root) {
+    if (root == NULL) return;
+
+    printf("%d ", root->data);   // Visit root
+    preOrder(root->left);        // Traverse left
+    preOrder(root->right);       // Traverse right
+}

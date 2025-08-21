@@ -1,0 +1,14 @@
+struct node *lca(struct node *root, int v1, int v2) {
+    // If both values are smaller than root, LCA lies in left
+    if (v1 < root->data && v2 < root->data) {
+        return lca(root->left, v1, v2);
+    }
+    // If both values are greater than root, LCA lies in right
+    else if (v1 > root->data && v2 > root->data) {
+        return lca(root->right, v1, v2);
+    }
+    // Otherwise, this node is the split point => LCA
+    else {
+        return root;
+    }
+}

@@ -1,0 +1,50 @@
+typedef struct {
+    int value;
+    int index;
+} Pair;
+
+int cmp_asc(const void* a, const void* b) {
+    return ((Pair*)a)->value - ((Pair*)b)->value;
+}
+
+int cmp_desc(const void* a, const void* b) {
+    return ((Pair*)b)->value - ((Pair*)a)->value;
+}
+
+int count_swaps(int* arr, int n, int descending) {
+    Pair* pairs = malloc(n * sizeof(Pair));
+    for (int i = 0; i < n; i++) {
+        pairs[i].value = arr[i];
+        pairs[i].index = i;
+    }
+
+    qsort(pairs, n, sizeof(Pair), descending ? cmp_desc : cmp_asc);
+
+    int* visited = calloc(n, sizeof(int));
+    int swaps = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (visited[i] || pairs[i].index == i) continue;
+
+        int cycle_size = 0;
+        int j = i;
+
+        while (!visited[j]) {
+            visited[j] = 1;
+            j = pairs[j].index;
+            cycle_size++;
+        }
+
+        if (cycle_size > 1) swaps += cycle_size - 1;
+    }
+
+    free(pairs);
+    free(visited);
+    return swaps;
+}
+
+int lilysHomework(int arr_count, int* arr) {
+    int asc_swaps = count_swaps(arr, arr_count, 0);
+    int desc_swaps = count_swaps(arr, arr_count, 1);
+    return asc_swaps < desc_swaps ? asc_swaps : desc_swaps;
+}
