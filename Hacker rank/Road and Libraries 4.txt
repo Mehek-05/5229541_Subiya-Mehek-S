@@ -1,0 +1,79 @@
+long roadsAndLibraries(int n, int c_lib, int c_road, int cities_rows, int cities_columns, int** cities) {
+    // Case 1: cheaper to build a library in every city
+    if (c_lib <= c_road) {
+        return (long)n * c_lib;
+    }
+
+    // Build adjacency list
+    int **adj = (int**)malloc((n + 1) * sizeof(int*));
+    int *adj_size = (int*)calloc(n + 1, sizeof(int));
+    int *adj_capacity = (int*)calloc(n + 1, sizeof(int));
+
+    for (int i = 0; i < n + 1; i++) {
+        adj_capacity[i] = 2;
+        adj[i] = (int*)malloc(adj_capacity[i] * sizeof(int));
+    }
+
+    for (int i = 0; i < cities_rows; i++) {
+        int u = cities[i][0];
+        int v = cities[i][1];
+
+        // expand if needed
+        if (adj_size[u] >= adj_capacity[u]) {
+            adj_capacity[u] *= 2;
+            adj[u] = realloc(adj[u], adj_capacity[u] * sizeof(int));
+        }
+        if (adj_size[v] >= adj_capacity[v]) {
+            adj_capacity[v] *= 2;
+            adj[v] = realloc(adj[v], adj_capacity[v] * sizeof(int));
+        }
+
+        adj[u][adj_size[u]++] = v;
+        adj[v][adj_size[v]++] = u;
+    }
+
+    // BFS/DFS visited tracking
+    bool *visited = (bool*)calloc(n + 1, sizeof(bool));
+    long total_cost = 0;
+
+    // Iterate over all cities
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            // new component found
+            long comp_size = 0;
+
+            // BFS queue
+            int *queue = (int*)malloc(n * sizeof(int));
+            int front = 0, back = 0;
+            queue[back++] = i;
+            visited[i] = true;
+
+            while (front < back) {
+                int u = queue[front++];
+                comp_size++;
+
+                for (int j = 0; j < adj_size[u]; j++) {
+                    int v = adj[u][j];
+                    if (!visited[v]) {
+                        visited[v] = true;
+                        queue[back++] = v;
+                    }
+                }
+            }
+
+            free(queue);
+
+            // cost for this component
+            total_cost += c_lib + (comp_size - 1) * (long)c_road;
+        }
+    }
+
+    // cleanup
+    for (int i = 0; i < n + 1; i++) free(adj[i]);
+    free(adj);
+    free(adj_size);
+    free(adj_capacity);
+    free(visited);
+
+    return total_cost;
+}

@@ -1,0 +1,83 @@
+int minimumMoves(int grid_count, char** grid, int startX, int startY, int goalX, int goalY) {
+    int n = grid_count;
+
+    // distance array initialized to -1 (unvisited)
+    int **dist = (int**)malloc(n * sizeof(int*));
+    for (int i = 0; i < n; i++) {
+        dist[i] = (int*)malloc(n * sizeof(int));
+        for (int j = 0; j < n; j++) {
+            dist[i][j] = -1;
+        }
+    }
+
+    // BFS queue
+    int qsize = n * n;
+    int (*queue)[2] = malloc(qsize * sizeof *queue);
+    int front = 0, back = 0;
+
+    // Start position
+    dist[startX][startY] = 0;
+    queue[back][0] = startX;
+    queue[back][1] = startY;
+    back++;
+
+    // BFS loop
+    while (front < back) {
+        int x = queue[front][0];
+        int y = queue[front][1];
+        front++;
+
+        // If goal reached
+        if (x == goalX && y == goalY) {
+            int ans = dist[x][y];
+
+            // free memory
+            for (int i = 0; i < n; i++) free(dist[i]);
+            free(dist);
+            free(queue);
+
+            return ans;
+        }
+
+        // Explore 4 directions
+        // Move UP
+        for (int i = x - 1; i >= 0 && grid[i][y] != 'X'; i--) {
+            if (dist[i][y] == -1) {
+                dist[i][y] = dist[x][y] + 1;
+                queue[back][0] = i;
+                queue[back][1] = y;
+                back++;
+            }
+        }
+        // Move DOWN
+        for (int i = x + 1; i < n && grid[i][y] != 'X'; i++) {
+            if (dist[i][y] == -1) {
+                dist[i][y] = dist[x][y] + 1;
+                queue[back][0] = i;
+                queue[back][1] = y;
+                back++;
+            }
+        }
+        // Move LEFT
+        for (int j = y - 1; j >= 0 && grid[x][j] != 'X'; j--) {
+            if (dist[x][j] == -1) {
+                dist[x][j] = dist[x][y] + 1;
+                queue[back][0] = x;
+                queue[back][1] = j;
+                back++;
+            }
+        }
+        // Move RIGHT
+        for (int j = y + 1; j < n && grid[x][j] != 'X'; j++) {
+            if (dist[x][j] == -1) {
+                dist[x][j] = dist[x][y] + 1;
+                queue[back][0] = x;
+                queue[back][1] = j;
+                back++;
+            }
+        }
+    }
+
+    // Should never happen if a path exists
+    return -1;
+}
